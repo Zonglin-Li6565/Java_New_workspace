@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Copy 2 elements to &apos;ColorPane/src/application&apos;&#x0D;&#x0A;- Original project: &apos;Hider&apos;&#x0D;&#x0A;- Destination element: &apos;ColorPane/src/application&apos;&#x0D;&#x0A;- Original elements:&#x0D;&#x0A;     wood_2.png&#x0D;&#x0A;     wood_1.png" description="Copy files" destination="=ColorPane/src&lt;application" element1="src/UItrigger/wood_2.png" element2="src/UItrigger/wood_1.png" files="2" flags="589830" folders="0" id="org.eclipse.jdt.ui.copy" policy="org.eclipse.jdt.ui.copyResources" stamp="1432922787435" units="0" version="1.0"/>
+</session>

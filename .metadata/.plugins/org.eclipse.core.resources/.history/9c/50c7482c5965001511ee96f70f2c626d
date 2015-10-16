@@ -1,0 +1,124 @@
+package ClassicalConditioning;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
+import Matrix.Matrix;
+import NeuralNetwork.NeuralNetwork;
+import NeuralNetwork.NeuralNetworkTest;
+
+public class Trainning {
+
+	public static void main(String[] args) throws Exception {
+		// TODO Auto-generated method stub
+		NeuralNetworkTest test = new NeuralNetworkTest();
+		String location = "/mnt/76A0FD4FA0FD15F9/newWorkspace/eclipse/NeuralNetwork";
+		BufferedReader X_in=new BufferedReader(new FileReader(location + "/X.txt"));
+		BufferedReader Y_in=new BufferedReader(new FileReader(location + "/Y.txt"));
+		System.out.println(Y_in.readLine());
+		Matrix[] XaY = test.loader(location + "/X.txt", location + "/Y.txt", 5000, 400, 5000, 1);
+		Matrix X = XaY[0];
+		Matrix Y_temp = XaY[1];
+		System.out.println(Y_temp);
+	    double elements[][] = new double[5000][10];
+	    for(int i = 0 ; i< elements.length; i++){
+	    	elements[i][(int)Y_temp.getElements()[i][0] % 10] = 1;
+	    }
+	    Matrix Y = new Matrix(elements, "Y");
+	    //System.out.println(Y);
+		int[] layerSizes = {400, 20, 20, 20, 10};
+		double lambda = 0;
+		NeuralNetwork myNetwork = new NeuralNetwork(layerSizes, lambda, "My Network");
+		Matrix costs = myNetwork.training(100, X, Y, 0.001);
+		System.out.println(costs);
+		for(int i = 0; i< 10; i++){
+			int t = (int)(Math.random() * 5000);
+			System.out.println("The " + t + " th training example: ");
+			Matrix X_test = X.getRow(t, "training Example_" + t);
+			Matrix p = myNetwork.predict(X_test);
+			double[][] p_elements = p.getElements();
+			int max = 0;
+			for(int j = 0; j < p_elements[0].length; j++){
+				if(p_elements[0][max] < p_elements[0][j]){
+					max = j;
+				}
+			}
+			System.out.print(Y_temp.getRow(t, "y"));
+			//System.out.println(p);
+			System.out.println("predicted: " + max);
+		}
+	}
+
+	public Matrix[] loader(String filelocation_X, String filelocation_Y, int x_row, int x_col, int y_row, int y_col) throws IOException{
+		Matrix[] readed = new Matrix[2];
+		BufferedReader X_in=new BufferedReader(new FileReader(filelocation_X));
+		BufferedReader Y_in=new BufferedReader(new FileReader(filelocation_Y));
+		double[][] x = new double[x_row][x_col];
+		double[][] y = new double[y_row][y_col];
+		/******************************* Loading X *******************************/
+		String reading = X_in.readLine();
+		int i = 0, j = 0, r = 0, c = 0;
+		String temp = "";
+		int lineTracker = 1;
+		while(reading != null && lineTracker <= x_row){
+			System.out.println("reading " + lineTracker + "line");
+			//System.out.println(reading);
+			//reading = reading.substring(1, reading.length());
+			while(j < reading.length()){
+				if(reading.substring(j, j + 1).equals(" ")){
+					temp = reading.substring(i, j);
+					i = j + 1;
+				}
+				if(temp != null && ! temp.equals("")){
+					x[r][c] = Double.parseDouble(temp);
+					temp = null;
+					c++;
+				}
+				j++;
+			}
+			i = j = 0;
+			r++;
+			c = 0;
+			lineTracker ++;
+			reading = X_in.readLine();
+		}
+		readed[0] = new Matrix(x, "X");
+		/******************************* Loading Y *******************************/
+		String reading_Y = Y_in.readLine();
+		i = 0;
+		j = 0;
+		temp = "";
+		r = 0;
+		c = 0;
+		lineTracker = 1;
+		while(reading_Y != null && lineTracker <= y_row ){
+			System.out.println("reading Y: " + lineTracker + "line");
+			System.out.println(reading_Y);
+			//reading = reading.substring(1, reading.length());
+			while(j < reading_Y.length()){
+				if(reading_Y.substring(j, j + 1).equals(" ") || reading_Y.substring(j, j + 1).equals("\n")){
+					temp = reading_Y.substring(i, j);
+					i = j + 1;
+				}
+				if((j + 1) == reading_Y.length()){
+					temp = reading_Y.substring(i, j + 1);
+				}
+				if(temp != null && ! temp.equals("")){
+					y[r][c] = Double.parseDouble(temp);
+					temp = null;
+					c++;
+				}
+				j++;
+			}
+			i = 0;
+			j = 0;
+			r++;
+			c = 0;
+			lineTracker ++;
+			reading_Y = Y_in.readLine();
+		}
+		readed[1] = new Matrix(y, "Y");
+		return readed;
+	}
+}

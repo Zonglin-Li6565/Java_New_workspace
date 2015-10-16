@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<style>
+	.background {
+    -fx-background-image: url("wood_1.png");
+    -fx-background-repeat: repeat;
+	}
+</style>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label fx:id="label" layoutX="163.0" layoutY="173.0" prefHeight="55.0" prefWidth="275.0" text="Label" />
+      <Button fx:id="button" layoutX="268.0" layoutY="275.0" mnemonicParsing="false" onMouseClicked="#onClick" text="Update" />
+      <Button layoutX="259.0" layoutY="319.0" mnemonicParsing="false" onMouseClicked="#showNewStage" text="new stage" />
+      <Button layoutX="154.0" layoutY="61.0" mnemonicParsing="false" onMouseClicked="#closeItself" text="close itself" />
+      <Button layoutX="347.0" layoutY="61.0" mnemonicParsing="false" onMouseClicked="#closeAll" text="close All" />
+      <Button layoutX="471.0" layoutY="319.0" mnemonicParsing="false" onMouseClicked="#showNewDialog" text="New Dialog" />
+   </children>
+</AnchorPane>

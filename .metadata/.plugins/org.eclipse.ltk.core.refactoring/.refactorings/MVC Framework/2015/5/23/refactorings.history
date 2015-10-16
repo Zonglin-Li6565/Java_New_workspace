@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Encapsulate field &apos;MessageContainer.Update.fullScreen&apos; in &apos;MessageContainer.Update&apos;&#x0D;&#x0A;- Original project: &apos;MVC Framework&apos;&#x0D;&#x0A;- Original element: &apos;MessageContainer.Update.fullScreen&apos;&#x0D;&#x0A;- Getter method name: &apos;getFullScreen&apos;&#x0D;&#x0A;- Setter method name: &apos;setFullScreen&apos;&#x0D;&#x0A;- Field visibility: &apos;public&apos;&#x0D;&#x0A;- Use getter and setter methods in declaring type" comments="false" declaring="true" description="Encapsulate field &apos;fullScreen&apos;" flags="589830" getter="getFullScreen" id="org.eclipse.jdt.ui.self.encapsulate" input="/src&lt;MessageContainer{Update.java[Update^fullScreen" insertion="30" setter="setFullScreen" stamp="1433106310383" version="1.0" visibility="1"/>
+</session>

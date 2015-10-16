@@ -1,0 +1,28 @@
+package Parser;
+
+import java.util.ArrayList;
+
+public class FunctionManager {
+	
+	public static FunctionManager instance;
+	
+	private FunctionManager(){
+	}
+	
+	public static FunctionManager getInstance(){
+		if(instance == null){
+			instance = new FunctionManager();
+		}
+		return instance;
+	}
+	
+	public double functionExecutor(String functionName, ArrayList<Double> parameters){
+		double result = 0.0;
+		System.out.println("name = " + functionName);
+		System.out.println(parameters);
+		for(double d: parameters){
+			result += d;
+		}
+		return result;
+	}
+}

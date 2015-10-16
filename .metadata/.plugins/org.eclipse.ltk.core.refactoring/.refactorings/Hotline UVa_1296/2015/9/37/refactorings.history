@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Move element &apos;&apos; to &apos;Answerer.initializePersons()&apos;&#x0D;&#x0A;- Original project: &apos;Hotline UVa_1296&apos;&#x0D;&#x0A;- Destination element: &apos;Answerer.initializePersons()&apos;&#x0D;&#x0A;- Original element: &apos;Answerer.answerQ1(...)&apos;&#x0D;&#x0A;- Textual move only&#x0D;&#x0A;- Update references to refactored element" description="Move method" destination="/src&lt;{Answerer.java[Answerer~initializePersons" element1="/src&lt;{Answerer.java[Answerer~answerQ1~QString;~QString;~QString;" flags="589830" id="org.eclipse.jdt.ui.move" members="1" policy="org.eclipse.jdt.ui.moveMembers" stamp="1441503215199" version="1.0"/>
+</session>

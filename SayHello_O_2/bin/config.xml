@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Configurations>
+	<Handlers>
+		<SayHello_O_2>hello.SayHello_O_2</SayHello_O_2>
+		<Test_O_2>hello.Test_O_2</Test_O_2>
+	</Handlers>
+	<Views>
+		<FXMLView>FXML</FXMLView>
+	</Views>
+</Configurations>

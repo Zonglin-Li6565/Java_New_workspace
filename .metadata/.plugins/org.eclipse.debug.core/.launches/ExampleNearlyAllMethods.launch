@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.jdt.launching.localJavaApplication">
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
+<listEntry value="/CS125/src/CS125Lab2/ExampleNearlyAllMethods.java"/>
+</listAttribute>
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
+<listEntry value="1"/>
+</listAttribute>
+<stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value="CS125Lab2.ExampleNearlyAllMethods"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="CS125"/>
+</launchConfiguration>

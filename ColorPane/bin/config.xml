@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Configurations>
+	<Handlers>
+		<ColorGenerator>application.ColorGenerator</ColorGenerator>
+		<newStageHandler>Test.newStageHandler</newStageHandler>
+		<newDialogHandler>application.NewDialogHandler</newDialogHandler>
+	</Handlers>
+	<Views>
+		<MainWindowController controller="application.MainWindowController">MainWindow.fxml</MainWindowController>
+	</Views>
+</Configurations>

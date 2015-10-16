@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.image.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" style="-fx-font-size: 14pt; -fx-font-family: &quot;Tahoma&quot;; -fx-base: #DFB951; -fx-background-image: url(&quot;wood_1.png&quot;);" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   
+   <children>
+      <Label fx:id="label" layoutX="63.0" layoutY="66.0" prefHeight="55.0" prefWidth="275.0" text="Label" />
+      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="63.0" layoutY="236.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@wood_1.png" />
+         </image>
+      </ImageView>
+      <VBox id="vBox" fx:id="vBox" layoutX="453.0" layoutY="66.0" prefHeight="302.0" prefWidth="124.0">
+         <children>
+            <Button fx:id="button_1" mnemonicParsing="false" onMouseClicked="#closeItself" prefHeight="38.0" prefWidth="121.0" text="close itself">
+               <effect>
+                  <InnerShadow />
+               </effect>
+            </Button>
+            <Button fx:id="button_2" mnemonicParsing="false" onMouseClicked="#closeAll" prefHeight="38.0" prefWidth="121.0" text="close All">
+               <effect>
+                  <InnerShadow />
+               </effect>
+            </Button>
+            <Button fx:id="button_3" mnemonicParsing="false" onMouseClicked="#showNewStage" prefHeight="38.0" prefWidth="121.0" text="new stage">
+               <effect>
+                  <InnerShadow />
+               </effect>
+            </Button>
+            <Button fx:id="button_4" mnemonicParsing="false" onMouseClicked="#onClick" prefHeight="38.0" prefWidth="121.0" text="Update">
+               <effect>
+                  <InnerShadow />
+               </effect>
+            </Button>
+            <Button fx:id="button_5" mnemonicParsing="false" onMouseClicked="#showNewDialog" prefHeight="38.0" prefWidth="121.0" text="New Dialog">
+               <effect>
+                  <InnerShadow />
+               </effect>
+            </Button>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>

@@ -1,0 +1,139 @@
+package XMLService;
+
+import java.util.ArrayList;
+
+/**
+ * A data structure to store system configurations
+ * Algorithm still need improvement
+ * @author Administrator
+ *
+ */
+public class Configuration {
+	private boolean hasText;
+	private boolean hasChildrenotherthanText;
+	private boolean hasAttributes;
+	private ArrayList<SystemConfig> children;
+	private String name;
+	private String text;
+	private ArrayList<String> attributes;
+	
+	public SystemConfig(){
+		children = new ArrayList<SystemConfig>();
+		this.attributes = new ArrayList<String>();
+	}
+	
+	public SystemConfig(String name, boolean hasAttributes){
+		children = new ArrayList<SystemConfig>();
+		this.name = name;
+		this.hasAttributes = hasAttributes;
+		if(hasAttributes){
+			this.attributes = new ArrayList<String>();
+		}
+	}
+
+	/**
+	 * @return the hasText
+	 */
+	public boolean isHasText() {
+		return hasText;
+	}
+
+	/**
+	 * @param hasText the hasText to set
+	 */
+	public void setHasText(boolean hasText) {
+		this.hasText = hasText;
+	}
+
+	/**
+	 * @return the hasChildrenotherthanText
+	 */
+	public boolean isHasChildrenotherthanText() {
+		return hasChildrenotherthanText;
+	}
+
+	/**
+	 * @param hasChildrenotherthanText the hasChildrenotherthanText to set
+	 */
+	public void setHasChildrenotherthanText(boolean hasChildrenotherthanText) {
+		this.hasChildrenotherthanText = hasChildrenotherthanText;
+	}
+
+	/**
+	 * @return the hasAttributes
+	 */
+	public boolean isHasAttributes() {
+		return hasAttributes;
+	}
+
+	/**
+	 * @param hasAttributes the hasAttributes to set
+	 */
+	public void setHasAttributes(boolean hasAttributes) {
+		this.hasAttributes = hasAttributes;
+	}
+
+	/**
+	 * @return the children
+	 */
+	public ArrayList<SystemConfig> getChildren() {
+		return children;
+	}
+
+	/**
+	 * @param children the children to set
+	 */
+	public void setChildren(ArrayList<SystemConfig> children) {
+		this.children = children;
+	}
+
+	/**
+	 * @return the name
+	 */
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * @param name the name to set
+	 */
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	/**
+	 * @return the text
+	 */
+	public String getText() {
+		return text;
+	}
+
+	/**
+	 * @param text the text to set
+	 */
+	public void setText(String text) {
+		this.text = text;
+	}
+
+	/**
+	 * @return the attributes
+	 */
+	public ArrayList<String> getAttributes() {
+		return attributes;
+	}
+
+	/**
+	 * @param attributes the attributes to set
+	 */
+	public void setAttributes(ArrayList<String> attributes) {
+		this.attributes = attributes;
+	}
+	
+	/**
+	 * add a children
+	 * @param sc
+	 */
+	public void addChildren(SystemConfig sc){
+		children.add(sc);
+	}
+}

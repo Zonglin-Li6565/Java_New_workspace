@@ -1,0 +1,181 @@
+package FXMLWindowManager;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.Enumeration;
+import java.util.Hashtable;
+
+import Core.Main;
+import XMLService.Configuration;
+import XMLService.XMLService;
+import javafx.fxml.FXMLLoader;
+import javafx.fxml.JavaFXBuilderFactory;
+import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
+import interfaces.Handler;
+import interfaces.Mapper;
+import interfaces.ViewController;
+import interfaces.WindowManager;
+
+public class FXWindowManager implements WindowManager{
+	
+	private Stage stage;
+	private String folderofViews;
+	private ViewController view;
+	private Hashtable<String, ViewController> views;
+	private Hashtable<String, Stage> stages;
+	private URI viewinfoxmlLocation;
+	private Mapper mapper;
+	public static FXWindowManager instance;
+	
+	private FXWindowManager(URI viewinfoxmlLocation, Mapper mapper){
+		this.viewinfoxmlLocation = viewinfoxmlLocation;
+		this.mapper = mapper;
+	}
+	
+	public static synchronized FXWindowManager getInstance(URI viewinfoxmlLocation, 
+			Mapper mapper){
+		if(instance == null){
+			instance = new FXWindowManager(viewinfoxmlLocation, mapper);
+		}
+		return instance;
+	}
+	
+	public void setMapper(mapper){
+		this.mapper = mapper;
+	}
+	
+	@Override
+	public ViewController replaceSceneContent(String stageName,
+			boolean resizeAble) throws Exception {
+		// TODO Auto-generated method stub
+		Path Location = viewLocationFetcher(stageName);
+		if(Location == null){
+			throw new Exception("No such view");
+		}
+		String jarLocation = Location.toString(); 
+		XMLService xmlSevice = XMLService.getInstance();
+		URL location = new URL("jar:file:" + jarLocation +"!/" + "config.xml");
+		InputStream is = location.openStream();
+		Configuration cg = xmlSevice.parseXML(is).getChild("Handlers");
+		String viewName = cg.getChild(stageName + "$1").getText();
+		URL fxmlLocation = Location.resolve(viewName).toUri().toURL();
+		FXMLLoader loader = new FXMLLoader();
+        InputStream in = fxmlLocation.openStream();
+        loader.setBuilderFactory(new JavaFXBuilderFactory());
+        loader.setLocation(fxmlLocation);
+        AnchorPane page;
+        try {
+            page = (AnchorPane) loader.load(in);
+		} finally {
+			in.close();
+        }
+        stage.setResizable(resizeAble);
+        Scene scene = new Scene(page);
+        double nowWidth = stage.getWidth();
+        double nowHight = stage.getHeight();
+        double nowX = stage.getX();
+        double nowY = stage.getY();
+        stage.setScene(scene);        
+        stage.sizeToScene();
+        double futureWidth = stage.getWidth();
+        double futureHight = stage.getHeight();
+        double futureX = nowX - (futureWidth - nowWidth) / 2;
+        double futureY = nowY - (futureHight - nowHight) / 2;
+        if(nowX >=0 && nowY >= 0){
+        	stage.setX(futureX);
+        	stage.setY(futureY);
+        }
+        
+        ViewController n = (ViewController)loader.getController();
+        this.stages.remove(stage);
+        this.stages.put(n.getClass().getSimpleName(), stage);
+        
+		return n;
+	}
+	@Override
+	public ViewController replaceSceneContent(String stageName,
+			int x, int y,boolean resizeAble) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public void setStageStyle(String viewName, StageStyle stageStyle) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public ViewController showNewStage(String title,
+			boolean resizeAble, StageStyle stageStyle) throws IOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public ViewController showNewStage(String title,
+			boolean resizeAble, StageStyle stageStyle, int x, int y) throws IOException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public void shutdownStage(String viewName) {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void changingSettingofStage(String stageName, StageStyle stageStyle,
+			boolean resizAble, String title, int x, int y) {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	public Path viewLocationFetcher(String viewName) 
+			throws MalformedURLException, IOException{
+		Path location = Paths.get("");
+		XMLService xml = XMLService.getInstance();
+		InputStream in = viewinfoxmlLocation.toURL().openStream();
+		Configuration pluginfo = xml.parseXML(in);
+		Enumeration<Configuration> directories = pluginfo.getAllChildren();
+		while(directories != null && directories.hasMoreElements()){
+			Configuration directory = directories.nextElement();
+			Path get = directoryScanner(location, directory, viewName);
+			if(get != null){
+				return get;
+			}
+		}
+		return null;
+	}
+	
+	public Path directoryScanner(Path parentPath, 
+			Configuration node, String className){
+		Path currentPath = parentPath.resolve(node.getAttributeValue("path"));
+		Enumeration<Configuration> pluginsOrDirectories = 
+				node.getAllChildren();
+		while(pluginsOrDirectories != null && pluginsOrDirectories.hasMoreElements()){
+			Configuration child = pluginsOrDirectories.nextElement();
+			String nodeName = child.getName();
+			if(nodeName.indexOf("$") != -1){
+				nodeName = nodeName.substring(0, nodeName.indexOf("$"));
+			}
+			if(nodeName.equals("plugin")){
+				Enumeration<Configuration> classes = child.getAllChildren();
+				while(classes != null && classes.hasMoreElements()){
+					Configuration clazz = classes.nextElement();
+					if(clazz.getText().equals(className) && !clazz.getName().startsWith("view")){ 
+						return currentPath.resolve(child.getAttributeValue("location"));
+					}
+				}
+			}else if(nodeName.endsWith("directory")){
+				directoryScanner(currentPath, child, className);
+			}
+		}
+		return null;
+	}
+	
+}

@@ -1,0 +1,93 @@
+package interfaces;
+
+import java.io.IOException;
+
+import javafx.stage.StageStyle;
+
+/**
+ * <hr>
+ * Implementing notes:<br>
+ * The support for dialog window has not been implemented yet.
+ * <br>
+ * @author Zonglin Li
+ *
+ */
+public interface WindowManager {
+	
+	/**
+	 * Same center as the previous scene
+	 * @param FXlocation
+	 * @return
+	 * @throws Exception 
+	 */
+	abstract ViewController replaceSceneContent(String FXlocation, boolean resizeAble) throws Exception;
+
+	/**
+	 * At the indicated location
+	 * @param FXlocation
+	 * @param x
+	 * @param y
+	 * @param width
+	 * @param hight
+	 * @return
+	 * @throws Exception 
+	 */
+	abstract ViewController replaceSceneContent(String FXlocation, int x, int y, 
+			boolean resizeAble) throws Exception;
+	
+	/**
+	 * Set the <code>StageStyle</code> for the view with <code>viewName</code>
+	 * @param viewName
+	 * @param stageStyle
+	 */
+	abstract void setStageStyle(String viewName, StageStyle stageStyle);
+	
+	/**
+	 * Default window location. Default fxml file location.
+	 * @param title
+	 * @return
+	 */
+	abstract ViewController showStartWindow(String title, boolean resizeable);
+	
+	/**
+	 * Default window location. Specified fxml file location.
+	 * @param location
+	 * @param title
+	 * @return
+	 */
+	abstract ViewController showStartWindow(String location, String title, 
+			boolean resizeable);
+	
+	/**
+	 * Default window location. Specified fxml file location.<br>
+	 * For the information about StageStyle, see JavaFx official 
+	 * javadoc
+	 * @param location
+	 * @param title
+	 * @return
+	 */
+	abstract ViewController showStartWindow(String location, String title, 
+			boolean resizeable, StageStyle stageStyle);
+
+	/**
+	 * 
+	 * @param FXlocation
+	 * @return
+	 */
+	abstract ViewController showNewStage(String FXlocation, String title, 
+			boolean resizeAble) throws IOException;
+	
+	/**
+	 * For information about StageStyle, see official javadoc 
+	 * @param FXlocation
+	 * @return
+	 */
+	abstract ViewController showNewStage(String FXlocation, String title, 
+			boolean resizeAble, StageStyle stageStyle) throws IOException;
+
+	/**
+	 * 
+	 * @param viewName
+	 */
+	abstract void shutdownStage(String viewName);
+}

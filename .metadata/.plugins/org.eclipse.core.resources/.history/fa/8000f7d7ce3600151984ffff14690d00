@@ -1,0 +1,155 @@
+package Parser;
+
+import java.util.ArrayList;
+
+import Exceptions.LexicalError;
+import Exceptions.RuntimeError;
+import Exceptions.SyntaxError;
+import Token.Comma;
+import Token.Operation;
+import Token.Parenthese;
+import Token.Token;
+import Token.Number;
+import Token.Identifier;
+
+public class Parser {
+	
+	private ArrayList<Token> tokenStream;
+	private FunctionManager functionManager;
+	
+	public Parser(){
+		tokenStream = new ArrayList<Token>();
+		functionManager = FunctionManager.getInstance();
+	}
+	
+	public double parse(String input) throws LexicalError, SyntaxError, RuntimeError{
+		tokenStream.clear();
+		LexicalAnalysis(input.toCharArray());
+		//System.out.println(tokenStream);
+		return expression(0, tokenStream.size());
+	}
+	
+	private void LexicalAnalysis(char[] input) throws LexicalError{
+		int i = 0;
+		char peek;
+		while (i < input.length){
+			peek = input[i];
+			i++;
+			if(peek == ' '){
+				continue;
+			}
+			switch (peek){
+			case '+': tokenStream.add(new Operation(Operation.PLUS)); continue;
+			case '-': tokenStream.add(new Operation(Operation.MINUS)); continue;
+			case '*': tokenStream.add(new Operation(Operation.TIMES)); continue;
+			case '/': tokenStream.add(new Operation(Operation.DIVIDES)); continue;
+			case '(': tokenStream.add(new Parenthese(Parenthese.LEFT)); continue;
+			case ')': tokenStream.add(new Parenthese(Parenthese.RIGHT)); continue;
+			case ',': tokenStream.add(new Comma()); continue;
+			}
+			if(Character.isDigit(peek)){
+				StringBuffer s = new StringBuffer();
+				boolean decimal = false;
+				i--;
+				while(true){
+					if(i >= input.length){ break; }
+					peek = input[i];
+					if(! (Character.isDigit(peek) || peek == '.')) { break; }
+					if(peek == '.'){
+						if(!decimal){
+							decimal = true;
+						}else{
+							throw new LexicalError();
+						}
+					}
+					s.append(peek);
+					i++;
+				}
+				tokenStream.add(new Number(Double.parseDouble(s.toString())));
+				continue;
+			}
+			if(Character.isLetter(peek)){
+				StringBuffer s = new StringBuffer();
+				i --;
+				//while(i < input.length && Character.isLetter(peek)){
+				while(true){
+					if(i >= input.length) { break; }
+					peek = input[i];
+					if(! Character.isLetter(peek)) { break; }
+					s.append(peek);
+					i++;
+				}
+				tokenStream.add(new Identifier(s.toString()));
+				continue;
+			}
+			throw new LexicalError();
+		}
+	}
+	
+	private double expression(int start, int end) throws SyntaxError, RuntimeError{
+		if(start == end){
+			throw new SyntaxError();
+		}
+		if(start == (end - 1)){
+			if(tokenStream.get(start).kind == Token.NUMBER){
+				return ((Number) tokenStream.get(start)).value;
+			}
+			if(tokenStream.get(start).kind == Token.IDENTIFIER){
+				return 0;
+			}
+		}
+		int p = 0;
+		int rootoperation = -1;
+		for(int i = end - 1; i >= start; i--){
+			if(tokenStream.get(i).kind == Token.PARENTHESIS){
+				switch (((Parenthese) tokenStream.get(i)).side){
+				case Parenthese.RIGHT : p++; break;
+				case Parenthese.LEFT: p--; break;
+				default: throw new RuntimeError("Parser.expression->No.1");
+				}
+			}
+			if(p == 0 && tokenStream.get(i).kind == Token.OPERATOR){
+				if(rootoperation == -1){
+					rootoperation = i;
+				}else if(p == 0 && ((Operation) tokenStream.get(i)).operation <
+						((Operation) tokenStream.get(rootoperation)).operation - 2){
+					rootoperation = i;
+				}
+			}
+		}
+		if(rootoperation != -1){
+			double left = expression(start, rootoperation);
+			double right = expression(rootoperation + 1, end);
+			switch (((Operation) tokenStream.get(rootoperation)).operation){
+			case Operation.PLUS: return left + right;
+			case Operation.MINUS: return left - right;
+			case Operation.TIMES: return left * right;
+			case Operation.DIVIDES: return left / right;
+			default : throw new RuntimeError("Parser.expression->No.2"); 
+			}
+		}else {
+			switch (tokenStream.get(start).kind){
+			case Token.PARENTHESIS : return expression(start + 1, end - 1);
+			case Token.IDENTIFIER:{
+				if(tokenStream.get(start + 1).kind == Token.PARENTHESIS && 
+						tokenStream.get(end - 1).kind == Token.PARENTHESIS){
+					ArrayList<Double> parameters = new ArrayList<Double>();
+					for(int j = start + 2, k = start + 2; j < end; j++){
+						if(tokenStream.get(j).kind == Token.COMMA){
+							parameters.add(expression(k, j));
+							k = j + 1;
+						}
+						if(j == end - 1){
+							parameters.add(expression(k, j));
+							break;
+						}
+					}
+					return functionManager.functionExecutor(((Identifier)tokenStream.get(start)).name, 
+							parameters);
+				}
+			}
+			default: throw new SyntaxError();
+			}
+		}
+	}
+}
